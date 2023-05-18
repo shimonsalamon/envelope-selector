@@ -169,44 +169,6 @@
         background-color: #45a049;
       }
     </style>
-    <script>
-      function suggestEnvelopes() {
-        const envelopes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 489]
-        const chosenEnvelopes = []
-        const amount = parseInt(document.getElementById("amount").value)
-
-        if (amount > 1000) {
-          document.getElementById("error").innerHTML =
-            "Amount should not exceed 1000."
-          return
-        } else {
-          document.getElementById("error").innerHTML = ""
-        }
-
-        let remainingAmount = amount
-
-        for (let i = envelopes.length - 1; i >= 0; i--) {
-          if (remainingAmount >= envelopes[i]) {
-            chosenEnvelopes.push(i + 1)
-            remainingAmount -= envelopes[i]
-          }
-        }
-
-        for (let i = 1; i <= 10; i++) {
-          const envelope = document.getElementById(`envelope${i}`)
-          if (chosenEnvelopes.includes(i)) {
-            envelope.classList.add("chosen")
-          } else {
-            envelope.classList.remove("chosen")
-          }
-        }
-      }
-
-      function generateRandomAmount() {
-        const randomAmount = Math.floor(Math.random() * 1000) + 1
-        document.getElementById("amount").value = randomAmount
-      }
-    </script>
   </head>
   <body>
     <div class="container">
@@ -249,7 +211,9 @@
         </button>
         <div id="error" class="error"></div>
       </div>
-      <button class="submit-btn" onclick="suggestEnvelopes()">Submit</button>
+      <button id="submitBtn" class="submit-btn" onclick="suggestEnvelopes()">
+        Submit
+      </button>
       <div class="envelope-container">
         <div class="envelope" id="envelope1">$1</div>
         <div class="envelope" id="envelope2">$2</div>
@@ -264,4 +228,53 @@
       </div>
     </div>
   </body>
+  <script>
+    const amountInput = document.getElementById("amount")
+    const submitBtn = document.getElementById("submitBtn")
+
+    amountInput.addEventListener("keypress", function (event) {
+      // Check if Enter key is pressed (key code 13)
+      if (event.keyCode === 13 || event.which === 13) {
+        // Trigger click event on the submit button
+        submitBtn.click()
+      }
+    })
+
+    function suggestEnvelopes() {
+      const envelopes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 489]
+      const chosenEnvelopes = []
+      const amount = parseInt(document.getElementById("amount").value)
+
+      if (amount > 1000) {
+        document.getElementById("error").innerHTML =
+          "Amount should not exceed 1000."
+        return
+      } else {
+        document.getElementById("error").innerHTML = ""
+      }
+
+      let remainingAmount = amount
+
+      for (let i = envelopes.length - 1; i >= 0; i--) {
+        if (remainingAmount >= envelopes[i]) {
+          chosenEnvelopes.push(i + 1)
+          remainingAmount -= envelopes[i]
+        }
+      }
+
+      for (let i = 1; i <= 10; i++) {
+        const envelope = document.getElementById(`envelope${i}`)
+        if (chosenEnvelopes.includes(i)) {
+          envelope.classList.add("chosen")
+        } else {
+          envelope.classList.remove("chosen")
+        }
+      }
+    }
+
+    function generateRandomAmount() {
+      const randomAmount = Math.floor(Math.random() * 1000) + 1
+      document.getElementById("amount").value = randomAmount
+    }
+  </script>
 </html>
